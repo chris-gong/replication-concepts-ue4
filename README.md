@@ -6,3 +6,6 @@ More helpful links on replication:
   * https://docs.unrealengine.com/en-us/Gameplay/Networking/Actors
   * https://www.gabrielgambetta.com/client-server-game-architecture.html
   * https://www.youtube.com/watch?v=TbaOyvWfJE0&feature=youtu.be&fbclid=IwAR1Z_5gUcdS3YtGnIPrPzthSIUo6e5yguaFVOm5-0AIt0Znp5HJy9Gruwx8
+ 
+Topics covered:
+  * Idle/Running animations: https://youtu.be/Zxjf4efpgGY
