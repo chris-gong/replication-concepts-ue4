@@ -2,10 +2,13 @@
 
 
 #include "ReplicationConceptsAnimInstance.h"
+#include "ReplicationConceptsCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 UReplicationConceptsAnimInstance::UReplicationConceptsAnimInstance()
 {
 	Speed = 0.0;
+	IsInAir = false;
 }
 
 void UReplicationConceptsAnimInstance::NativeUpdateAnimation(float DeltaSeconds) {
@@ -14,5 +17,9 @@ void UReplicationConceptsAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	if (OwningActor != nullptr) {
 		Speed = OwningActor->GetVelocity().Size();
+		AReplicationConceptsCharacter* OwningCharacter = Cast<AReplicationConceptsCharacter>(OwningActor);
+		if (OwningCharacter != nullptr) {
+			IsInAir = OwningCharacter->GetCharacterMovement()->IsFalling();
+		}
 	}
 }
