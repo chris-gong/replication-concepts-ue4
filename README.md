@@ -9,3 +9,4 @@ More helpful links on replication:
  
 Topics covered:
   * Idle/Running animations: https://youtu.be/Zxjf4efpgGY
+  * Jump animation: https://youtu.be/ySeBG_X8Wwg
