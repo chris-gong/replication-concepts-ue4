@@ -10,4 +10,4 @@ More helpful links on replication:
 Topics covered:
   * Idle/Running animations: https://youtu.be/Zxjf4efpgGY
   * Jump animation: https://youtu.be/ySeBG_X8Wwg
-  * Debugging Visual Studio in C++: https://youtu.be/v0va9i4_Hhs
+  * Debugging C++ in Visual Studio: https://youtu.be/v0va9i4_Hhs
