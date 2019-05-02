@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "CoinActor.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AReplicationConceptsCharacter
@@ -15,7 +16,8 @@
 AReplicationConceptsCharacter::AReplicationConceptsCharacter()
 {
 	// Set size for collision capsule
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	TriggerCapsule = GetCapsuleComponent();
+	TriggerCapsule->InitCapsuleSize(42.f, 96.0f);
 
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
@@ -45,6 +47,8 @@ AReplicationConceptsCharacter::AReplicationConceptsCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	Score = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,6 +80,10 @@ void AReplicationConceptsCharacter::SetupPlayerInputComponent(class UInputCompon
 	PlayerInputComponent->BindAction("ResetVR", IE_Pressed, this, &AReplicationConceptsCharacter::OnResetVR);
 }
 
+void AReplicationConceptsCharacter::BeginPlay() {
+	Super::BeginPlay();
+	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AReplicationConceptsCharacter::OnOverlapBegin);
+}
 
 void AReplicationConceptsCharacter::OnResetVR()
 {
@@ -131,4 +139,18 @@ void AReplicationConceptsCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void AReplicationConceptsCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if (OtherActor != nullptr) {
+		if (OtherActor->IsA(ACoinActor::StaticClass())) {
+			ACoinActor* CoinActor = Cast<ACoinActor>(OtherActor);
+			AddPoints(CoinActor);
+		}
+	}
+}
+
+void AReplicationConceptsCharacter::AddPoints(ACoinActor* CoinActor) {
+	Score += CoinActor->Points;
+	CoinActor->Destroy();
 }
