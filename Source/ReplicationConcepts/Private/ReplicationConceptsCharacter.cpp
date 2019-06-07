@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "CoinActor.h"
+#include "Engine.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AReplicationConceptsCharacter
@@ -82,6 +83,7 @@ void AReplicationConceptsCharacter::SetupPlayerInputComponent(class UInputCompon
 
 void AReplicationConceptsCharacter::BeginPlay() {
 	Super::BeginPlay();
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(GetNetMode()));
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AReplicationConceptsCharacter::OnOverlapBegin);
 }
 
@@ -92,12 +94,12 @@ void AReplicationConceptsCharacter::OnResetVR()
 
 void AReplicationConceptsCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		Jump();
+	Jump();
 }
 
 void AReplicationConceptsCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
-		StopJumping();
+	StopJumping();
 }
 
 void AReplicationConceptsCharacter::TurnAtRate(float Rate)
@@ -128,12 +130,12 @@ void AReplicationConceptsCharacter::MoveForward(float Value)
 
 void AReplicationConceptsCharacter::MoveRight(float Value)
 {
-	if ( (Controller != NULL) && (Value != 0.0f) )
+	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
+
 		// get right vector 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
@@ -142,10 +144,12 @@ void AReplicationConceptsCharacter::MoveRight(float Value)
 }
 
 void AReplicationConceptsCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	if (OtherActor != nullptr) {
-		if (OtherActor->IsA(ACoinActor::StaticClass())) {
-			ACoinActor* CoinActor = Cast<ACoinActor>(OtherActor);
-			AddPoints(CoinActor);
+	if (HasAuthority()) {
+		if (OtherActor != nullptr) {
+			if (OtherActor->IsA(ACoinActor::StaticClass())) {
+				ACoinActor* CoinActor = Cast<ACoinActor>(OtherActor);
+				AddPoints(CoinActor);
+			}
 		}
 	}
 }
