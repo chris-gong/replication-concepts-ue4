@@ -11,3 +11,4 @@ Topics covered:
   * Idle/Running animations: https://youtu.be/Zxjf4efpgGY
   * Jump animation: https://youtu.be/ySeBG_X8Wwg
   * Debugging C++ in Visual Studio: https://youtu.be/v0va9i4_Hhs
+  * Network modes and actor roles: https://youtu.be/yBVz6hrajYQ
